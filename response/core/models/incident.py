@@ -115,7 +115,7 @@ class Incident(models.Model):
             if sev_id == self.severity:
                 return text
         return None
-
+    
     def severity_emoji(self):
         if not self.severity:
             return "☁️"
@@ -137,6 +137,13 @@ class Incident(models.Model):
             return ":droplet:"
         else:
             return ":fire:"
+
+    def badge_type(self):
+        if self.is_closed():
+            return "badge-success"
+        elif self.severity and int(self.severity) < 3:
+            return "badge-danger"
+        return "badge-warning"
 
     def action_items(self):
         return core.models.Action.objects.filter(incident=self)
